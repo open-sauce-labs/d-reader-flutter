@@ -34,7 +34,7 @@ class Carousel extends ConsumerWidget {
                       SizedBox(
                         height: 266,
                         width: double.infinity,
-                        child: CoverCachedImage(
+                        child: CommonCachedImage(
                           imageUrl: carouselItem.image,
                         ),
                       ),
