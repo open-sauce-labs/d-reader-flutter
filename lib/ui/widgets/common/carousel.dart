@@ -20,6 +20,10 @@ class Carousel extends ConsumerWidget {
             height: 266.0,
             viewportFraction: 1,
             enlargeCenterPage: true,
+            autoPlay: true,
+            autoPlayInterval: const Duration(
+              seconds: 5,
+            ),
           ),
           items: data
               .map(
