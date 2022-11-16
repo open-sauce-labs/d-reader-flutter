@@ -1,5 +1,5 @@
 import 'package:d_reader_flutter/ui/shared/app_colors.dart';
-import 'package:d_reader_flutter/ui/widgets/creators/tab_bar.dart';
+import 'package:d_reader_flutter/ui/widgets/common/layout/custom_sliver_tab_bar.dart';
 import 'package:flutter/material.dart';
 
 class CreatorsTabNavigation extends StatelessWidget {
@@ -11,7 +11,7 @@ class CreatorsTabNavigation extends StatelessWidget {
       length: 3,
       child: Scaffold(
         backgroundColor: ColorPalette.appBackgroundColor,
-        appBar: CreatorTabBar(
+        appBar: CustomSliverTabBar(
           children: [
             Tab(
               child: Text(
