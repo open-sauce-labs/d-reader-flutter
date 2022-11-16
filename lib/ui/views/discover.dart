@@ -1,5 +1,8 @@
 import 'package:d_reader_flutter/ui/widgets/common/layout/custom_sliver_tab_persisent_header.dart';
 import 'package:d_reader_flutter/ui/widgets/common/search_bar_sliver.dart';
+import 'package:d_reader_flutter/ui/widgets/discover/tabs/comics_tab.dart';
+import 'package:d_reader_flutter/ui/widgets/discover/tabs/creators_tab.dart';
+import 'package:d_reader_flutter/ui/widgets/discover/tabs/issues_tab.dart';
 import 'package:flutter/material.dart';
 
 class DiscoverView extends StatelessWidget {
@@ -45,15 +48,9 @@ class DiscoverView extends StatelessWidget {
         },
         body: const TabBarView(
           children: [
-            Center(
-              child: Text('Comics'),
-            ),
-            Center(
-              child: Text('Issues'),
-            ),
-            Center(
-              child: Text('Creators'),
-            ),
+            DiscoverComicsTab(),
+            DiscoverIssuesTab(),
+            DiscoverCreatorsTab(),
           ],
         ),
       ),
