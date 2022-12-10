@@ -15,9 +15,12 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<AuthWallet?> connectWallet(String address, String encoding) async {
+    print('addres $address');
+    print('encodign $encoding');
     String? responseBody = await ApiService.apiCallGet(
-        '/auth/wallet/connect/$address/$encoding',
-        includeAuthHeader: false);
+      '/auth/wallet/connect/$address/$encoding',
+      includeAuthHeader: false,
+    );
     return responseBody != null
         ? AuthWallet.fromJson(jsonDecode(responseBody))
         : null;
