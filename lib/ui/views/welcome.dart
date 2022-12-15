@@ -37,10 +37,8 @@ class WelcomeView extends HookConsumerWidget {
                           globalHook.value.copyWith(isLoading: true);
                       await ref.read(solanaProvider.notifier).authorize();
                       final Ed25519HDPublicKey publicKey = Ed25519HDPublicKey(
-                          ref
-                              .read(solanaProvider)
-                              .authorizationResult!
-                              .publicKey);
+                        ref.read(solanaProvider).authorizationResult!.publicKey,
+                      );
                       DReaderWalletService walletService =
                           DReaderWalletService.instance;
                       final oneTimePassword =
