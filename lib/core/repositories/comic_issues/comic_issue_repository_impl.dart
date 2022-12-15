@@ -8,7 +8,7 @@ class ComicIssueRepositoryImpl implements ComicIssueRepository {
   @override
   Future<List<ComicIssueModel>> getComicIssues([String? queryString]) async {
     final String? responseBody =
-        await ApiService.apiCallGet('/comic-issue/get?$queryString');
+        await ApiService().apiCallGet('/comic-issue/get?$queryString');
     if (responseBody == null) {
       return [];
     }
@@ -25,7 +25,7 @@ class ComicIssueRepositoryImpl implements ComicIssueRepository {
   @override
   Future<ComicIssueModel?> getComic(int id) async {
     final String? responseBody =
-        await ApiService.apiCallGet('/comic-issue/get/$id');
+        await ApiService().apiCallGet('/comic-issue/get/$id');
     return responseBody == null
         ? null
         : ComicIssueModel.fromJson(jsonDecode(responseBody));

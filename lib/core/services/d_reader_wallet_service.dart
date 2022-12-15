@@ -3,11 +3,12 @@ import 'package:solana/base58.dart';
 import 'package:solana/solana.dart';
 
 class DReaderWalletService {
-  DReaderWalletService._();
+  DReaderWalletService._(this._authRepo);
+
   static DReaderWalletService? _instance;
   static DReaderWalletService get instance =>
-      _instance ?? DReaderWalletService._();
-  final AuthRepositoryImpl _authRepo = AuthRepositoryImpl();
+      _instance ?? DReaderWalletService._(AuthRepositoryImpl());
+  final AuthRepositoryImpl _authRepo;
 
   Future<String> getOneTimePassword(Ed25519HDPublicKey publicKey) async {
     return await _authRepo.getOneTimePassword(publicKey.toBase58());

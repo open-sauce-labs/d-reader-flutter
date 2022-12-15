@@ -7,7 +7,7 @@ import 'package:d_reader_flutter/core/services/api_service.dart';
 class CreatorRepositoryImpl implements CreatorRepository {
   @override
   Future<List<CreatorModel>> getCreators() async {
-    final String? responseBody = await ApiService.apiCallGet('/creator/get');
+    final String? responseBody = await ApiService().apiCallGet('/creator/get');
     if (responseBody == null) {
       return [];
     }
@@ -24,7 +24,7 @@ class CreatorRepositoryImpl implements CreatorRepository {
   @override
   Future<CreatorModel> getCreator(String slug) async {
     final String? responseBody =
-        await ApiService.apiCallGet('/creator/get/$slug');
+        await ApiService().apiCallGet('/creator/get/$slug');
     dynamic decodedData = jsonDecode(responseBody!);
     return CreatorModel.fromJson(decodedData);
   }

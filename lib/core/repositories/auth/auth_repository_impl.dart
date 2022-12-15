@@ -7,7 +7,7 @@ import 'package:d_reader_flutter/core/services/api_service.dart';
 class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<String> getOneTimePassword(String address) async {
-    String? responseBody = await ApiService.apiCallGet(
+    String? responseBody = await ApiService().apiCallGet(
         '/auth/wallet/request-password/$address',
         includeAuthHeader: false);
     return responseBody ?? 'An error occured';
@@ -15,9 +15,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<AuthWallet?> connectWallet(String address, String encoding) async {
-    print('addres $address');
-    print('encodign $encoding');
-    String? responseBody = await ApiService.apiCallGet(
+    String? responseBody = await ApiService().apiCallGet(
       '/auth/wallet/connect/$address/$encoding',
       includeAuthHeader: false,
     );

@@ -1,8 +1,8 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:solana/encoder.dart';
 import 'package:solana/solana.dart';
 import 'package:solana_mobile_client/solana_mobile_client.dart';
 
@@ -12,37 +12,21 @@ final solanaProvider = StateNotifierProvider<SolanaClient, SolanaClientState>(
 @immutable // preferred to use immutable states
 class SolanaClientState {
   const SolanaClientState({
-    this.capabilities,
     this.authorizationResult,
   });
-  final GetCapabilitiesResult? capabilities;
   final AuthorizationResult? authorizationResult;
 
   SolanaClientState copyWith({
-    GetCapabilitiesResult? capabilities,
     AuthorizationResult? authorizationResult,
   }) {
     return SolanaClientState(
-      capabilities: capabilities,
       authorizationResult: authorizationResult,
     );
   }
 }
 
 class SolanaClient extends StateNotifier<SolanaClientState> {
-  SolanaClient()
-      : super(const SolanaClientState(
-            capabilities: null, authorizationResult: null));
-
-  Future<void> requestCapabilities() async {
-    final session = await LocalAssociationScenario.create();
-    session.startActivityForResult(null).ignore();
-
-    final client = await session.start();
-    final result = await client.getCapabilities();
-    state = state.copyWith(capabilities: result);
-    await session.close();
-  }
+  SolanaClient() : super(const SolanaClientState(authorizationResult: null));
 
   Future<void> authorize() async {
     final session = await LocalAssociationScenario.create();
@@ -69,11 +53,11 @@ class SolanaClient extends StateNotifier<SolanaClientState> {
 
     final client = await session.start();
     await client.deauthorize(authToken: authToken);
-    await session.close();
     state = state.copyWith(authorizationResult: null);
+    await session.close();
   }
 
-  Future<List<Uint8List>> signMessages(List<String> messagesArg) async {
+  Future<List<Uint8List>> signMessage(String message) async {
     final session = await LocalAssociationScenario.create();
     session.startActivityForResult(null).ignore();
 
@@ -82,14 +66,12 @@ class SolanaClient extends StateNotifier<SolanaClientState> {
     if (await _doReauthorize(client)) {
       final signer =
           Ed25519HDPublicKey(state.authorizationResult!.publicKey.toList());
-      final addresses = [signer.bytes].map(Uint8List.fromList).toList();
-      final messages = _generateMessages(signer: signer, messages: messagesArg)
-          .map((e) => e.compile(recentBlockhash: '').data.toList())
-          .map(Uint8List.fromList)
-          .toList();
+      final addresses = Uint8List.fromList(signer.bytes);
+
+      final messageToBeSigned = Uint8List.fromList(utf8.encode(message));
       try {
-        final result =
-            await client.signMessages(messages: messages, addresses: addresses);
+        final result = await client.signMessages(
+            messages: [messageToBeSigned], addresses: [addresses]);
         await session.close();
         return result.signedPayloads;
       } catch (e) {
@@ -98,15 +80,6 @@ class SolanaClient extends StateNotifier<SolanaClientState> {
     }
     return [];
   }
-
-  List<Message> _generateMessages({
-    required Ed25519HDPublicKey signer,
-    required List<String> messages,
-  }) =>
-      List.generate(
-        messages.length,
-        (index) => MemoInstruction(signers: [signer], memo: messages[index]),
-      ).map(Message.only).toList();
 
   Future<bool> _doReauthorize(MobileWalletAdapterClient client) async {
     final authToken = state.authorizationResult?.authToken;

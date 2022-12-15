@@ -38,6 +38,8 @@ dependencies:
   intl: ^0.17.0
   hooks_riverpod: ^2.1.1
   flutter_hooks: ^0.18.5+1
+  shared_preferences: ^2.0.15
+  lottie: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +71,7 @@ flutter:
   assets:
     - .env
     - assets/images/
+    - assets/animation_files/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

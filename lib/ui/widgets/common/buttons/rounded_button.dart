@@ -5,20 +5,24 @@ class RoundedButton extends StatelessWidget {
   final String text;
   final Color backgroundColor;
   final Color textColor;
+  final void Function() onPressed;
+  final Size size;
 
   const RoundedButton({
     Key? key,
     required this.text,
+    required this.onPressed,
     this.backgroundColor = ColorPalette.dReaderYellow100,
     this.textColor = ColorPalette.appBackgroundColor,
+    this.size = const Size(120, 27),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: onPressed,
       style: TextButton.styleFrom(
-        minimumSize: const Size(120, 27),
+        minimumSize: size,
         backgroundColor: backgroundColor,
         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
         shape: const RoundedRectangleBorder(
