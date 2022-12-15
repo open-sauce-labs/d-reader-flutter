@@ -7,6 +7,8 @@ class RoundedButton extends StatelessWidget {
   final Color textColor;
   final void Function() onPressed;
   final Size size;
+  final double fontSize;
+  final bool isLoading;
 
   const RoundedButton({
     Key? key,
@@ -15,16 +17,18 @@ class RoundedButton extends StatelessWidget {
     this.backgroundColor = ColorPalette.dReaderYellow100,
     this.textColor = ColorPalette.appBackgroundColor,
     this.size = const Size(120, 27),
+    this.fontSize = 14,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: onPressed,
+      onPressed: isLoading ? null : onPressed,
       style: TextButton.styleFrom(
         minimumSize: size,
         backgroundColor: backgroundColor,
-        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(
@@ -36,9 +40,16 @@ class RoundedButton extends StatelessWidget {
         textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
               color: ColorPalette.boxBackground200,
               fontWeight: FontWeight.w700,
+              fontSize: fontSize,
             ),
       ),
-      child: Text(text),
+      child: isLoading
+          ? const CircularProgressIndicator(
+              color: ColorPalette.appBackgroundColor,
+            )
+          : Text(
+              text,
+            ),
     );
   }
 }
